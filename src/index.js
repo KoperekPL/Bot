@@ -1,27 +1,25 @@
-const config = require("./config/config.js")
+const { token, prefix } = require("./config/config.js")
 
 const chalk = require("chalk")
 
-const Discord = require("discord.js")
-const client = new Discord.Client()
+const { Client, RichEmbed } = require("discord.js")
+const client = new Client()
+
+const commandHandler = require("./handlers/command.handler")
 
 const log = console.log
+
+//initialize command handler
+commandHandler(client)
 
 client.on("ready", () => {
   log(chalk.red("Autorski bot Pjotera"))
   log(chalk.blue(`Zalogowano jako:  ${client.user.tag}.`))
 })
 
-client.on("message", msg => {
-  log(msg.content, msg.author.tag)
-  const { author } = msg
-  if(author.bot){
-    return
-  }
-  if (msg.content === "+ping") {
-    msg.reply("Pong!")
-  }
-})
+client.login(token)
 
-client.login(config.token)
-
+//error handler
+client.on("debug", msg => {})
+client.on("warn", msg => {})
+client.on("error", msg => {})
